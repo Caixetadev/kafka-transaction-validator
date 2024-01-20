@@ -1,1 +1,1 @@
-![image](https://github.com/Caixetadev/fraud-check-kafka-integration/assets/87894998/bc5e0d44-6df8-4b97-8023-d50945cd8850)
+![image](https://github.com/Caixetadev/fraud-check-kafka-integration/assets/87894998/36d9501d-fa50-4dce-a84a-79ab46d20b2b)
