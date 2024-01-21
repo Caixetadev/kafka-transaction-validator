@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/entity"
+	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/kafka"
 )
 
 func NewTransaction(input CreateTransactionInput) *entity.Transaction {
@@ -32,11 +33,13 @@ type TransactionRepository interface {
 
 type transactionService struct {
 	transactionRepository TransactionRepository
+	producer              *kafka.Producer
 }
 
-func NewTransactionService(transactionRepository TransactionRepository) *transactionService {
+func NewTransactionService(transactionRepository TransactionRepository, producer *kafka.Producer) *transactionService {
 	return &transactionService{
 		transactionRepository: transactionRepository,
+		producer:              producer,
 	}
 }
 
@@ -44,6 +47,11 @@ func (ts *transactionService) Insert(ctx context.Context, transactionInput Creat
 	transaction := NewTransaction(transactionInput)
 
 	err := ts.transactionRepository.Insert(ctx, transaction)
+	if err != nil {
+		return err
+	}
+
+	err = ts.producer.SendMessage(ctx, transaction.TransactionExternalID, transaction)
 	if err != nil {
 		return err
 	}
