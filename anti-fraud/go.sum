@@ -2,6 +2,10 @@ github.com/Caixetadev/fraud-check-kafka-integration/transaction v0.0.0-202401210
 github.com/Caixetadev/fraud-check-kafka-integration/transaction v0.0.0-20240121033142-f834f0c171f8/go.mod h1:RBzx2e/awg5syLWxo3UfoIbd957k2EZ07AUf+rHspEY=
 github.com/Caixetadev/fraud-check-kafka-integration/transaction v0.0.0-20240121141719-5ed2c9c56871 h1:L9NEajyb7zuuxAK3rc7D6y8dPeki2iirlRHw2OoqtQY=
 github.com/Caixetadev/fraud-check-kafka-integration/transaction v0.0.0-20240121141719-5ed2c9c56871/go.mod h1:RBzx2e/awg5syLWxo3UfoIbd957k2EZ07AUf+rHspEY=
+github.com/Caixetadev/fraud-check-kafka-integration/transaction v0.0.0-20240121150852-464e19b65d0f h1:wlfh3qDIx6nzmIb7th8H17FbhJ/fqc14Rpf7lDg05CM=
+github.com/Caixetadev/fraud-check-kafka-integration/transaction v0.0.0-20240121150852-464e19b65d0f/go.mod h1:RBzx2e/awg5syLWxo3UfoIbd957k2EZ07AUf+rHspEY=
+github.com/Caixetadev/fraud-check-kafka-integration/transaction v0.0.0-20240121151626-cf266162c4ae h1:CATOe5AjMOe3VOLrPpiU3prOTLmxSa7kntH0dq7kX9I=
+github.com/Caixetadev/fraud-check-kafka-integration/transaction v0.0.0-20240121151626-cf266162c4ae/go.mod h1:RBzx2e/awg5syLWxo3UfoIbd957k2EZ07AUf+rHspEY=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
