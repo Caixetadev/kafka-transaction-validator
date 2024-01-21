@@ -7,6 +7,7 @@ import (
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/postgresql"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/repository"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/service"
+	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/kafka"
 )
 
 func main() {
@@ -24,7 +25,10 @@ func main() {
 		AccountExternalIDCredit: "teste",
 	}
 
-	service := service.NewTransactionService(repository)
+	producer := kafka.NewProducer([]string{"localhost:9092"}, "CREATED_TRANSACTION")
+	defer producer.Close()
+
+	service := service.NewTransactionService(repository, producer)
 
 	err = service.Insert(context.TODO(), transactionInput)
 	if err != nil {
