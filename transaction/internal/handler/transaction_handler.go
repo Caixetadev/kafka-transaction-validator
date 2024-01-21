@@ -24,7 +24,7 @@ func (th *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.R
 	}
 
 	if r.Method != "POST" {
-		http.Error(w, "Method is not supported.", http.StatusNotFound)
+		http.Error(w, "Method is not supported.", http.StatusMethodNotAllowed)
 		return
 	}
 
