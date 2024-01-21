@@ -5,15 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/entity"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/postgresql"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/repository"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/service"
-	kafkac "github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/kafka"
-	"github.com/segmentio/kafka-go"
+	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/kafka"
 )
 
 func main() {
@@ -23,17 +21,13 @@ func main() {
 		return
 	}
 
-	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers:   []string{"localhost:9092"},
-		Topic:     "VALIDATED_TRANSACTION",
-		Partition: 0,
-		MaxBytes:  10e6,
-	})
-
 	repository := repository.NewTransactionRepository(db)
 
-	producer := kafkac.NewProducer([]string{"localhost:9092"}, "CREATED_TRANSACTION")
+	producer := kafka.NewProducer([]string{"localhost:9092"}, "CREATED_TRANSACTION")
 	defer producer.Close()
+
+	consumer := kafka.NewConsumer([]string{"localhost:9092"}, "VALIDATED_TRANSACTION")
+	defer consumer.Close()
 
 	services := service.NewTransactionService(repository, producer)
 
@@ -67,21 +61,13 @@ func main() {
 
 	go func() {
 		for {
-			var transaction *entity.Transaction
+			var transaction entity.Transaction
 
-			m, err := r.ReadMessage(context.Background())
-			if err != nil {
-				log.Println("Error reading message:", err)
-				continue
+			consumer.ReadMessage(context.TODO(), &transaction)
+
+			if len(transaction.TransactionStatus) > 0 {
+				services.Update(context.TODO(), &transaction)
 			}
-
-			err = json.Unmarshal(m.Value, &transaction)
-			if err != nil {
-				log.Println("Error decoding JSON:", err)
-				continue
-			}
-
-			services.Update(context.TODO(), transaction)
 		}
 	}()
 
