@@ -33,19 +33,19 @@ type TransactionRepository interface {
 	Update(ctx context.Context, transaction *entity.Transaction) error
 }
 
-type transactionService struct {
+type TransactionService struct {
 	transactionRepository TransactionRepository
 	producer              *kafka.Producer
 }
 
-func NewTransactionService(transactionRepository TransactionRepository, producer *kafka.Producer) *transactionService {
-	return &transactionService{
+func NewTransactionService(transactionRepository TransactionRepository, producer *kafka.Producer) *TransactionService {
+	return &TransactionService{
 		transactionRepository: transactionRepository,
 		producer:              producer,
 	}
 }
 
-func (ts *transactionService) Insert(ctx context.Context, transactionInput CreateTransactionInput) error {
+func (ts *TransactionService) Insert(ctx context.Context, transactionInput CreateTransactionInput) error {
 	transaction := NewTransaction(transactionInput)
 
 	err := ts.transactionRepository.Insert(ctx, transaction)
@@ -56,6 +56,6 @@ func (ts *transactionService) Insert(ctx context.Context, transactionInput Creat
 	return ts.producer.SendMessage(ctx, transaction.TransactionExternalID, transaction)
 }
 
-func (ts *transactionService) Update(ctx context.Context, transaction *entity.Transaction) error {
+func (ts *TransactionService) Update(ctx context.Context, transaction *entity.Transaction) error {
 	return ts.transactionRepository.Update(ctx, transaction)
 }
