@@ -6,11 +6,12 @@ import (
 
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/entity"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/kafka"
+	"github.com/google/uuid"
 )
 
 func NewTransaction(input CreateTransactionInput) *entity.Transaction {
 	return &entity.Transaction{
-		TransactionExternalID: "teste123",
+		TransactionExternalID: uuid.New().String(),
 		TransactionType: entity.TransactionType{
 			Name: "ExampleType",
 		},
@@ -29,6 +30,7 @@ type CreateTransactionInput struct {
 
 type TransactionRepository interface {
 	Insert(ctx context.Context, transaction *entity.Transaction) error
+	Update(ctx context.Context, transaction *entity.Transaction) error
 }
 
 type transactionService struct {
@@ -51,10 +53,9 @@ func (ts *transactionService) Insert(ctx context.Context, transactionInput Creat
 		return err
 	}
 
-	err = ts.producer.SendMessage(ctx, transaction.TransactionExternalID, transaction)
-	if err != nil {
-		return err
-	}
+	return ts.producer.SendMessage(ctx, transaction.TransactionExternalID, transaction)
+}
 
-	return nil
+func (ts *transactionService) Update(ctx context.Context, transaction *entity.Transaction) error {
+	return ts.transactionRepository.Update(ctx, transaction)
 }
