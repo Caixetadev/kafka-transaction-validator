@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
+	"log"
 	"net/http"
 
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/postgresql"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/repository"
+	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/routes"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/service"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/entity"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/kafka"
@@ -31,34 +31,6 @@ func main() {
 
 	services := service.NewTransactionService(repository, producer)
 
-	http.HandleFunc("/transaction", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/transaction" {
-			http.Error(w, "404 not found.", http.StatusNotFound)
-			return
-		}
-
-		if r.Method != "POST" {
-			http.Error(w, "Method is not supported.", http.StatusNotFound)
-			return
-		}
-
-		body, err := io.ReadAll(r.Body)
-		if err != nil {
-			http.Error(w, "Error reading request body", http.StatusInternalServerError)
-			return
-		}
-
-		var transaction service.CreateTransactionInput
-		if err := json.Unmarshal(body, &transaction); err != nil {
-			http.Error(w, "Error decoding JSON", http.StatusBadRequest)
-			return
-		}
-
-		go services.Insert(context.TODO(), transaction)
-
-		w.Write([]byte("CRIADO COM SUCESSO"))
-	})
-
 	go func() {
 		for {
 			var transaction entity.Transaction
@@ -66,10 +38,18 @@ func main() {
 			consumer.ReadMessage(context.TODO(), &transaction)
 
 			if len(transaction.TransactionStatus) > 0 {
-				services.Update(context.TODO(), &transaction)
+				err := services.Update(context.TODO(), &transaction)
+				if err != nil {
+					log.Println(err)
+					return
+				}
 			}
 		}
 	}()
 
-	http.ListenAndServe(":8080", nil)
+	routes.NewTransactionRouter(services)
+
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal(err)
+	}
 }
