@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	db, err := postgresql.New("postgres://root:password@localhost:5432/transaction")
+	db, err := postgresql.New("postgres://root:password@localhost:5432/database")
 	if err != nil {
 		fmt.Println(err)
 		return

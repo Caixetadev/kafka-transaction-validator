@@ -6,9 +6,10 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: transaction
+      POSTGRES_DB: database
     restart: always
     volumes:
+      - ./db.sql:/docker-entrypoint-initdb.d/db.sql
       - dbdata:/var/lib/postgresql/data
     ports:
       - 5432:5432
