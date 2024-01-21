@@ -7,10 +7,10 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/entity"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/postgresql"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/repository"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/service"
+	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/entity"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/kafka"
 )
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/entity"
+	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/entity"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/kafka"
 	"github.com/google/uuid"
 )

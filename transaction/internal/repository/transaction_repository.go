@@ -3,8 +3,8 @@ package repository
 import (
 	"context"
 
-	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/entity"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/service"
+	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/entity"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
