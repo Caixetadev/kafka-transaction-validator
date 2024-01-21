@@ -5,6 +5,7 @@ import (
 
 	"github.com/Caixetadev/fraud-check-kafka-integration/anti-fraud/internal/service"
 
+	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/entity"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/kafka"
 )
 
@@ -19,11 +20,11 @@ func main() {
 
 	go func() {
 		for {
-			var transaction service.Transaction
+			var transaction entity.Transaction
 
 			consumer.ReadMessage(context.TODO(), &transaction)
 
-			if transaction.TransactionStatus == "pending" {
+			if transaction.TransactionStatus == entity.Pending {
 				services.TransactionValidator(context.TODO(), transaction, producer)
 			}
 		}
