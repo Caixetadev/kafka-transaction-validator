@@ -11,9 +11,15 @@ Every time a financial transaction is created it must be validated by our anti-f
 Every transaction with a value greater than 1000 should be rejected.
 ![image](https://github.com/Caixetadev/fraud-check-kafka-integration/assets/87894998/36d9501d-fa50-4dce-a84a-79ab46d20b2b)
 
+## Adjustments and Improvements
+
+
+- [ ] balance the load of insert and update in the database
+
 ## Requirements
 - Go installed and configured
 - Docker and Docker Compose installed
+- k6 (optional)
 
 ## How to Run
 
@@ -56,3 +62,8 @@ Every transaction with a value greater than 1000 should be rejected.
     "tranferTypeId": 1,
     "value": 1
   }
+
+## Run k6 test
+```bash
+k6 run scripts/k6.js
+```
