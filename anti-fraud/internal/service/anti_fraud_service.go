@@ -21,6 +21,8 @@ func (af *antiFraudService) TransactionValidator(ctx context.Context, transactio
 		transaction.TransactionStatus = entity.Rejected
 	}
 
+	fmt.Println("ESTOU NO VALIDANDO E ESSE DEU ", transaction.TransactionStatus)
+
 	err := producer.SendMessage(ctx, transaction.TransactionExternalID, transaction)
 	if err != nil {
 		fmt.Println(err)

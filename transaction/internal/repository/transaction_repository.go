@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/service"
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/pkg/entity"
@@ -39,7 +40,9 @@ func (tr *transactionRepository) Insert(ctx context.Context, transaction *entity
 func (tr *transactionRepository) Update(ctx context.Context, transaction *entity.Transaction) error {
 	query := "UPDATE transactions SET status = $1 WHERE id = $2"
 
+	fmt.Println("UPDATE INICIALIZADO")
 	_, err := tr.db.Exec(ctx, query, transaction.TransactionStatus, transaction.TransactionExternalID)
+	fmt.Println("UPDATE FINALIZADO ", err)
 
 	return err
 }
