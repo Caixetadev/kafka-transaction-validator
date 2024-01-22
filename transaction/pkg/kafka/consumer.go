@@ -16,7 +16,7 @@ func NewConsumer(brokers []string, topic string) *Consumer {
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers:   brokers,
 		Topic:     topic,
-		Partition: 0,
+		Partition: 10,
 		MaxBytes:  10e6,
 	})
 
