@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 
 	"github.com/Caixetadev/fraud-check-kafka-integration/transaction/internal/service"
@@ -40,7 +41,10 @@ func (th *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	go th.TransactionService.Insert(context.TODO(), transaction)
+	err = th.TransactionService.Insert(context.TODO(), transaction)
+	if err != nil {
+		log.Println(err)
+	}
 
 	w.Write([]byte("CRIADO COM SUCESSO"))
 }
