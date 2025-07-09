@@ -1,4 +1,4 @@
-# 🍀 kafka-transaction-validator
+# 📘 kafka-transaction-validator
 > :warning: This repository was created to practice using Kafka and is not code to be used in production.
 
 ## Problem
